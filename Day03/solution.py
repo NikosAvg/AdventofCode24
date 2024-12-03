@@ -10,7 +10,8 @@ pattern = r"mul\((-?\d*\.?\d+),\s*(-?\d*\.?\d+)\)"
 matches = re.findall(pattern, data)
 
 res = 0
-# Print results
+
+# Calculate result
 for match in matches:
     res += int(match[0])*int(match[1])
     
@@ -23,8 +24,10 @@ masked_input = re.sub(exclude_pattern, "", data, flags=re.DOTALL)
 
 # Step 2: Find all valid mul(Number, Number) patterns in the remaining text
 matches = re.findall(pattern, masked_input)
-res2=0
 
+res2 = 0
+
+# Calculate result
 for match in matches:
     res2 += int(match[0])*int(match[1])
     
