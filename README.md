@@ -60,8 +60,9 @@ To execute a specific day's solution:
 | Day  | Challenge Status |
 |------|------------------|
 | Day 1 | ✅ Completed |
-| Day 2 | ❌ Not Started |
-
+| Day 2 | ✅ Completed |
+| Day 3 | ✅ Completed |
+| Day 4 | ✅ Completed |
 ---
 
 ## 📝 License
