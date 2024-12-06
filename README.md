@@ -16,11 +16,13 @@ The repository is organized as follows:
 ```
 📁 AdventofCode24
 ├── 📂 Day01
-│   ├── input.*   # Puzzle input for Day 1
+│   ├── input.txt   # Puzzle input for Day 1
+│   ├── test_input.txt   # Test Puzzle input for Day 1
 │   ├── solution.py # My solution for Day 1
 │
 ├── 📂 Day02
-│   ├── input.*   # Puzzle input for Day 2
+│   ├── input.txt   # Puzzle input for Day 2
+│   ├── test_input.txt   # Test Puzzle input for Day 2
 │   ├── solution.py # My solution for Day 2
 │
 └── README.md       # This file
@@ -28,6 +30,7 @@ The repository is organized as follows:
 
 - Each day has its own folder containing:
   - **`input.txt`**: The puzzle input for that day.
+  - **`test_input.txt`**: The test puzzle input for that day.
   - **`solution.py`**: My Python solution for that day's challenge.
 
 ---
