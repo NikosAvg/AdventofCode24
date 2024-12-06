@@ -1,6 +1,7 @@
 import numpy as np
+from collections import defaultdict
 # Open and read Input
-with open('test_input.txt', 'r') as file:
+with open('input.txt', 'r') as file:
     data = file.read()
 
 def string_to_array(s):
@@ -65,3 +66,71 @@ while exit == False:
 print(f'Part One: {np.sum(p)}')
 
 # Part Two
+
+# Re initialize the array
+array = string_to_array(data)
+res2 = 0  # Counter for total loop-causing positions
+
+# Precompute the starting position of the player
+startx, starty = np.where(array == positions[0])
+startx, starty = startx[0], starty[0]
+
+# Filter relevant positions: only empty positions adjacent to obstacles
+relevant_positions = [
+    (i, j)
+    for i in range(rows)
+    for j in range(cols)
+    if array[i, j] == '.'
+]
+
+for s in relevant_positions:
+    # Place the obstacle at position s
+    array[s] = '#'
+
+    # Simulate movement directly
+    posx, posy = startx, starty
+    direction = 0  # Initial direction (0: up, 1: right, 2: down, 3: left)
+    visited_states = set()
+    exit_sim = False
+    loop_detected = False
+
+    while not exit_sim:
+        # Detect a loop
+        state = ((posx, posy), direction)
+        if state in visited_states:
+            loop_detected = True
+            break
+
+        visited_states.add(state)
+
+        # Determine the next position based on the current direction
+        if direction == 0:  # Facing up (^)
+            next_posx, next_posy = posx - 1, posy
+        elif direction == 1:  # Facing right (>)
+            next_posx, next_posy = posx, posy + 1
+        elif direction == 2:  # Facing down (v)
+            next_posx, next_posy = posx + 1, posy
+        elif direction == 3:  # Facing left (<)
+            next_posx, next_posy = posx, posy - 1
+
+        # Check bounds
+        if not (0 <= next_posx < rows and 0 <= next_posy < cols):
+            exit_sim = True
+            continue
+
+        # Check for obstacles
+        if array[next_posx, next_posy] == '#':
+            # Turn right if there's an obstacle
+            direction = (direction + 1) % 4
+        else:
+            # Move forward
+            posx, posy = next_posx, next_posy
+
+    # Increment the counter if a loop was detected
+    if loop_detected:
+        res2 += 1
+
+    # Reset the position
+    array[s] = '.'
+
+print(f'Part Two: {res2}')
