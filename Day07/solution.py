@@ -43,7 +43,7 @@ res = 0
 for key in data_dict:
     combinations_list = generate_combinations(len(data_dict[key])-1, len(data_dict[key])-1, type=0)
     for combination in combinations_list:
-        # Corectly initializy based on the first operator:
+        # Corectly initialize based on the first operator:
         if len(combination) == 1:
             ans = data_dict[key][0]
             for d in data_dict[key][1:]:
@@ -60,9 +60,8 @@ print(f'Part One = {res}')
 res2 = 0
 for key in data_dict:
     combinations_list = generate_combinations(len(data_dict[key])-1, len(data_dict[key])-1, type=1)
-
     for combination in combinations_list:
-        # Corectly initializy based on the first operator:
+        # Corectly initialize based on the first operator:
         if len(combination) == 1:
             ans = data_dict[key][0]
             for d in data_dict[key][1:]:

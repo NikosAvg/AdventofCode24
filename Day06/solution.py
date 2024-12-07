@@ -7,92 +7,23 @@ with open('input.txt', 'r') as file:
 def string_to_array(s):
     # Split the string into lines
     lines = s.splitlines()
-
     # Convert each line into a list of characters and form a NumPy array
     arr = np.array([list(line) for line in lines])
     return arr
 
-array = string_to_array(data)
-
-positions = ('^','>','v','<')
-rows, cols = array.shape
-p = np.zeros([rows, cols])
-
-
-# Start from the initial position
-startx, starty = np.where(array == positions[0])
-
-# print((startx[0],starty[0]))
-exit = False
-
-posx, posy = startx[0], starty[0]
-
-while exit == False:
-    p[posx,posy] = 1
-    if array[posx,posy] == positions[0]: # ^
-        if posx - 1 < 0:
-            exit = True
-        elif array[posx - 1,posy] == '#':
-            array[posx,posy] = positions[1]
-        else:
-            array[posx-1,posy],array[posx,posy] = array[posx,posy], array[posx-1,posy]
-            posx = posx - 1
-
-    elif array[posx,posy] == positions[1]: # >
-        if posy + 1 > cols:
-            exit = True
-        elif array[posx,posy+1] == '#':
-            array[posx,posy] = positions[2]
-        else:
-            array[posx,posy+1],array[posx,posy] = array[posx,posy], array[posx,posy+1]
-            posy = posy + 1
-    elif array[posx,posy] == positions[2]: # v
-        if posx + 1 >= rows:
-            exit = True
-        elif array[posx + 1 , posy] == '#':
-            array[posx,posy] = positions[3]
-        else:
-            array[posx + 1,posy],array[posx,posy] = array[posx,posy], array[posx + 1,posy]
-            posx = posx + 1
-    elif array[posx,posy] == positions[3]: # <
-        if posy - 1 < 0:
-            exit = True
-        elif array[posx,posy - 1] == '#':
-            array[posx,posy] = positions[0]
-        else:
-            array[posx,posy - 1],array[posx,posy] = array[posx,posy], array[posx,posy - 1]
-            posy = posy - 1
-
-print(f'Part One: {np.sum(p)}')
-
-# Part Two
-
-# Re initialize the array
-array = string_to_array(data)
-res2 = 0  # Counter for total loop-causing positions
-
-# Precompute the starting position of the player
-startx, starty = np.where(array == positions[0])
-startx, starty = startx[0], starty[0]
-
-# Filter relevant positions: only empty positions adjacent to obstacles
-relevant_positions = [
-    (i, j)
-    for i in range(rows)
-    for j in range(cols)
-    if array[i, j] == '.'
-]
-
-for s in relevant_positions:
-    # Place the obstacle at position s
-    array[s] = '#'
-
-    # Simulate movement directly
+# Simulation function
+def simulate_movement(array, startx, starty, modify_array=False, block_pos=None):
+    rows, cols = array.shape
+    positions = ('^', '>', 'v', '<')
+    direction = 0  # Start facing up
     posx, posy = startx, starty
-    direction = 0  # Initial direction (0: up, 1: right, 2: down, 3: left)
+    p = np.zeros([rows, cols])  # Track visited positions
     visited_states = set()
     exit_sim = False
     loop_detected = False
+
+    if modify_array and block_pos is not None:
+        array[block_pos] = '#'
 
     while not exit_sim:
         # Detect a loop
@@ -102,6 +33,7 @@ for s in relevant_positions:
             break
 
         visited_states.add(state)
+        p[posx, posy] = 1  # Mark position as visited
 
         # Determine the next position based on the current direction
         if direction == 0:  # Facing up (^)
@@ -122,15 +54,39 @@ for s in relevant_positions:
         if array[next_posx, next_posy] == '#':
             # Turn right if there's an obstacle
             direction = (direction + 1) % 4
+            array[posx, posy] = positions[direction]
         else:
             # Move forward
+            array[posx, posy], array[next_posx, next_posy] = array[next_posx, next_posy], array[posx, posy]
             posx, posy = next_posx, next_posy
 
-    # Increment the counter if a loop was detected
+    if modify_array and block_pos is not None:
+        array[block_pos] = '.'  # Reset the position if modified
+
+    return np.sum(p), loop_detected
+
+# Prepare the array
+array = string_to_array(data)
+rows, cols = array.shape
+startx, starty = np.where(array == '^')
+startx, starty = startx[0], starty[0]
+
+# Part One
+res, _ = simulate_movement(array.copy(), startx, starty)
+print(f'Part One: {res}')
+
+# Part Two
+relevant_positions = [
+    (i, j)
+    for i in range(rows)
+    for j in range(cols)
+    if array[i, j] == '.'
+]
+
+res2 = 0  # Counter for total loop-causing positions
+
+for block_pos in relevant_positions:
+    _, loop_detected = simulate_movement(array.copy(), startx, starty, modify_array=True, block_pos=block_pos)
     if loop_detected:
         res2 += 1
-
-    # Reset the position
-    array[s] = '.'
-
 print(f'Part Two: {res2}')

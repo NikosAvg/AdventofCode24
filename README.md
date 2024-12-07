@@ -54,7 +54,7 @@ To execute a specific day's solution:
 ## 🛠️ Tools and Technologies
 
 - **Language:** Python 🐍
-- **Editor:** VS Code
+- **Editor:** Zed
 
 ---
 
