@@ -1,5 +1,5 @@
 import numpy as np
-from collections import defaultdict
+
 # Open and read Input
 with open('input.txt', 'r') as file:
     data = file.read()
