@@ -69,6 +69,7 @@ To execute a specific day's solution:
 | Day 5 | ✅ Completed |
 | Day 6 | ✅ Completed |
 | Day 7 | ✅ Completed |
+| Day 8 | ✅ Completed |
 ---
 
 ## 📝 License
