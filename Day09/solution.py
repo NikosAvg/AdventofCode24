@@ -31,3 +31,6 @@ for i in range(end):
     res += i*int(d[i])
 
 print(f'Part One {res}')
+
+
+print(d2)
