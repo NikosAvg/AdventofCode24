@@ -70,6 +70,8 @@ To execute a specific day's solution:
 | Day 6 | ✅ Completed |
 | Day 7 | ✅ Completed |
 | Day 8 | ✅ Completed |
+| Day 9 | ✅ Completed (Partialy) |
+| Day 10 | ✅ Completed |
 ---
 
 ## 📝 License
